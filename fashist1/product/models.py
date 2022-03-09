@@ -9,14 +9,15 @@ from django.db import models
 class Category(models.Model):
     name=models.CharField(max_length=255)
     slug=models.SlugField()
-
+    
     class Meta:
         ordering=('name',)
+        verbose_name_plural='catagories'
 
     def __str__(self):
         return self.name
 
-    def getabsolute_urls(self):
+    def get_absolute_urls(self):
         return f'/{self.slug}/'
 
 
@@ -30,7 +31,6 @@ class Product(models.Model):
     thumbnail=models.ImageField(upload_to='uploads/',blank=True,null=True)
     date_added=models.DateTimeField(auto_now_add=True)
 
-    class Meta:
         
     class Meta:
         ordering=('date_added',)
@@ -38,7 +38,7 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
-    def getabsolute_urls(self):
+    def get_absolute_urls(self):
         return f'/{self.category.slug}/{self.slug}/'
 
     def get_image(self):
@@ -61,7 +61,7 @@ class Product(models.Model):
         img.convert('RGB')
         img.thumbnail(size)
 
-        thumb_io=BytesIO
+        thumb_io=BytesIO()
         img.save(thumb_io,'JPEG',quality=85)
 
         thumbnail=File(thumb_io,name=image.name)
